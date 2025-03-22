@@ -1,17 +1,77 @@
+'use client'
 // src/components/auth/loginForm.jsx
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import TextInput from "@/components/ui/textInput";
 import Button from "@/components/ui/button";
 import Link from "next/link";
 import GoogleAuth from "@/components/auth/googleAuth";
+import { login } from "@/utils/api";
 
 function LoginForm() {
+    const router = useRouter();
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+
+        try {
+            const response = await login(formData);
+            // Here you might want to store the token in localStorage or a state management solution
+            if (response.token) {
+                localStorage.setItem('token', response.token);
+            }
+            router.push("/dashboard");
+        } catch (err) {
+            setError(err?.message || "Login failed. Please check your credentials and try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div className="w-full md:w-[448px] p-6 mx-auto justify-center items-center">
+        <form onSubmit={handleSubmit} className="w-full md:w-[448px] p-6 mx-auto justify-center items-center">
             <h3>Login</h3>
-            <TextInput placeholder="Email"/>
-            <TextInput placeholder="Password" />
-            <Button>Log in</Button>
-            <p className="text-center text-color-gray mt-2">Don't have an account? <Link href="/register" className="text-color-primary underline">Sign up</Link></p>
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            {success && <p className="text-green-500 text-center mb-4">{success}</p>}
+            <TextInput
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+            />
+            <TextInput
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+            />
+            <Button type="submit" disabled={loading}>
+                {loading ? "Logging in..." : "Log in"}
+            </Button>
+            <p className="text-center text-color-gray mt-2">
+                Don't have an account? <Link href="/register" className="text-color-primary underline">Sign up</Link>
+            </p>
 
             <div className="flex items-center my-10">
                 <hr className="flex-grow border-t border-gray-400" />
@@ -19,8 +79,8 @@ function LoginForm() {
                 <hr className="flex-grow border-t border-gray-400" />
             </div>
             <GoogleAuth />
-        </div>
-    )
+        </form>
+    );
 }
 
 export default LoginForm;
