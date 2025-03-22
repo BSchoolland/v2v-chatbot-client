@@ -3,6 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-primary: #0ea5e9;
+  --color-secondary: #8b5cf6;
+
+  /* Semantic colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
 }
 
 @theme inline {
@@ -16,6 +24,14 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --color-primary: #0ea5e9;
+    --color-secondary: #8b5cf6;
+
+    /* Semantic colors */
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
   }
 }
 
