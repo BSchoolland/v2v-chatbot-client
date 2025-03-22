@@ -1,9 +1,13 @@
 // src/components/auth/googleAuth.jsx
 
+// fake google auth for now
+import Image from "next/image";
+// TODO: add real google auth
+
 function GoogleAuth() {
     return (
         <div>
-            <h1>Google Auth component goes here</h1>
+            <Image src="/assets/fake-google.png" alt="Google" width={400} height={400}/>
         </div>
     )
 }

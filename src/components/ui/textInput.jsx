@@ -1,10 +1,8 @@
 // src/components/ui/textInput.jsx
 
-function TextInput() {
+function TextInput({ placeholder, ...props }) {
     return (
-        <div>
-            <h1>Text input component goes here</h1>
-        </div>
+        <input type="text" className="border-1 border-gray-300 rounded-[8px] p-2 text-color-light my-3 w-[100%] bg-color-light border-color-light" placeholder={placeholder} {...props} />
     )
 }
 

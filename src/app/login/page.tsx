@@ -1,9 +1,11 @@
 // src/app/login/page.tsx
 
+import LoginForm from "@/components/auth/loginForm";
+
 function Login() {
     return (
-        <div>
-            <h1>Login page goes here</h1>
+        <div className="flex flex-col items-center h-screen w-screen justify-center align-middle">
+            <LoginForm />
         </div>
     )
 }
