@@ -1,9 +1,10 @@
 // src/app/register/page.tsx
+import RegistrationForm from "@/components/auth/registrationForm";
 
 function Register() {
     return (
-        <div>
-            <h1>Register page goes here</h1>
+        <div className="flex justify-center items-center h-screen">
+            <RegistrationForm />
         </div>
     )
 }
