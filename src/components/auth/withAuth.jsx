@@ -24,10 +24,10 @@ export function withAuth(Component) {
                     setIsAuthenticated(authResult);
                     
                     if (!authResult) {
-                        router.push('/login');
+                        router.push('/login?from=' + window.location.pathname);
                     }
                 } catch (error) {
-                    router.push('/login');
+                    router.push('/login?from=' + window.location.pathname);
                 } finally {
                     setIsLoading(false);
                 }

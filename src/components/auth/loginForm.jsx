@@ -10,6 +10,7 @@ import { login } from "@/utils/api";
 
 function LoginForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -37,7 +38,11 @@ function LoginForm() {
             if (response.token) {
                 localStorage.setItem('token', response.token);
             }
-            router.push("/dashboard");
+            if (searchParams.get('from')) {
+                router.push(searchParams.get('from'));
+            } else {
+                router.push("/dashboard");
+            }
         } catch (err) {
             setError(err?.message || "Login failed. Please check your credentials and try again.");
         } finally {

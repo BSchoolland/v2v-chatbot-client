@@ -15,6 +15,7 @@ export default function Home() {
         <NavButton href="/login">Login</NavButton>
         <NavButton href="/register">Register</NavButton>
         <NavButton href="/dashboard">Dashboard</NavButton>
+        <NavButton href="/welcome">Welcome</NavButton>
       </div>
     </div>
   );
