@@ -6,10 +6,12 @@ import TextInput from "@/components/ui/textInput";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import WebscrapeButton from "./webscrapeButton";
+import WebscrapeProgressIndicator from "./webscrapeProgressIndicator";
 
 function CollectWebsiteContent({ onNextStep }) {
     const [websiteUrl, setWebsiteUrl] = useState("");
     const [webscrapeStatus, setWebscrapeStatus] = useState("idle");
+    const [webscrapeProgress, setWebscrapeProgress] = useState(0);
     const router = useRouter();
 
     const handleContinue = async () => {
@@ -22,9 +24,15 @@ function CollectWebsiteContent({ onNextStep }) {
         }
     };
 
+    // This is a mock function that simulates the webscrape process
     const handleWebscrape = async () => {
         setWebscrapeStatus("inProgress");
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        setWebscrapeProgress(0);
+        for (let i = 0; i < 25; i++) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            setWebscrapeProgress(i * 4);
+        }
+        setWebscrapeProgress(100);
         setWebscrapeStatus("completed");
     }
 
@@ -44,6 +52,7 @@ function CollectWebsiteContent({ onNextStep }) {
                 />
                 <WebscrapeButton onClick={handleWebscrape} disabled={!isFormValid} scraperStatus={webscrapeStatus}>Fetch all pages</WebscrapeButton>
             </div>
+            {webscrapeStatus !== "idle" && <WebscrapeProgressIndicator progress={webscrapeProgress} status={webscrapeStatus}/>}
             <Button onClick={handleContinue} disabled={webscrapeStatus !== "completed"}>Continue</Button>
 
         </div>
