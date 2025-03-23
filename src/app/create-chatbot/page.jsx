@@ -8,7 +8,7 @@ import DeployChatbot from "@/components/chatbot-creation/step5/deployChatbot";
 import Button from "@/components/ui/button";
 import { withAuth } from "@/components/auth/withAuth";
 import { useState } from "react";
-
+import ProgressStepIndicator from "@/components/chatbot-creation/progressStepIndicator";
 function CreateChatbotPage() {
     const [step, setStep] = useState(parseInt(localStorage.getItem("chatbotCreationStep")) || 1);
 
@@ -24,7 +24,7 @@ function CreateChatbotPage() {
     }
 
     return <div className="flex flex-col items-center w-[600px] mx-auto">
-        <h3>TODO: step progress bar</h3>
+        <ProgressStepIndicator step={step} />
         {step === 1 && <CreateChatbot onNextStep={handleNextStep} />}
         {step === 2 && <CollectWebsiteContent onNextStep={handleNextStep} />}
         {step === 3 && <CustomizeChatbot onNextStep={handleNextStep} />}

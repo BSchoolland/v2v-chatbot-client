@@ -5,12 +5,14 @@ import Button from "@/components/ui/button";
 import TextInput from "@/components/ui/textInput";
 import Plans from "./plans";
 import api from "@/utils/api";
-import { useRouter } from "next/navigation";
 
 function CreateChatbot({ onNextStep }) {
     const [chatbotName, setChatbotName] = useState("");
     const [selectedPlan, setSelectedPlan] = useState(null);
-    const router = useRouter();
+
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const planId = params.get('plan_id');
 
     const handleContinue = async () => {
         try {
@@ -21,15 +23,10 @@ function CreateChatbot({ onNextStep }) {
             });
             // set plan_id in local storage
             localStorage.setItem('plan_id', response.data.plan.plan_id);
-            // add plan_id to the url
-            router.push(
-                {
-                    pathname: window.location.pathname,
-                    query: {
-                        plan_id: response.data.plan.plan_id
-                    }
-                }
-            )
+            // set plan_id in url
+            params.set('plan_id', response.data.plan.plan_id);
+            window.history.pushState({}, '', `${url.pathname}?${params.toString()}`);
+            
             // If successful, proceed to next step
             onNextStep();
         } catch (error) {

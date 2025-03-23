@@ -1,9 +1,19 @@
 // src/components/onboarding/progressStepIndicator.jsx
 
-function ProgressStepIndicator() {
+const totalSteps = 5;
+function ProgressStepIndicator({step}) {
     return (
-        <div>
-            <h1>Progress step indicator component goes here</h1>
+        <div className="flex flex-row justify-between w-full mt-20 mb-10">
+            {Array.from({ length: totalSteps }).map((_, index) => (
+                <hr 
+                    key={index} 
+                    className={`
+                        w-[100px] h-2 border-none rounded-full bg-[#909090]
+                        transition-all duration-500 ease-out
+                        ${index < step ? "bg-color-primary scale-110" : ""}
+                    `}
+                />
+            ))}
         </div>
     )
 }
