@@ -69,4 +69,15 @@ export const initiateWebscrape = async (url: string, planId: string, onMessage: 
     return eventSource;
 };
 
+export const deletePage = async (url: string, planId: string) => {
+    try {
+        await api.delete('/website/api/chatbot-setup/delete-page', {
+            data: { url, planId }
+        });
+        return true;
+    } catch (error: any) {
+        throw error.response?.data || error.message;
+    }
+};
+
 export default api; 

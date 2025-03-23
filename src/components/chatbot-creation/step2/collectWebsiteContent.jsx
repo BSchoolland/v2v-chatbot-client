@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/button";
 import TextInput from "@/components/ui/textInput";
-import { initiateWebscrape } from "@/utils/api";
+import { initiateWebscrape, deletePage } from "@/utils/api";
 import WebscrapeButton from "./webscrapeButton";
 import WebscrapeProgressIndicator from "./webscrapeProgressIndicator";
 import { useSearchParams } from 'next/navigation'
@@ -13,7 +13,7 @@ function CollectWebsiteContent({ onNextStep }) {
     const [websiteUrl, setWebsiteUrl] = useState("");
     const [webscrapeStatus, setWebscrapeStatus] = useState("idle");
     const [webscrapeProgress, setWebscrapeProgress] = useState(0);
-    const [scrapedPages, setScrapedPages] = useState([{url: "https://www.example.com", internal: true}]);
+    const [scrapedPages, setScrapedPages] = useState([]);
     const searchParams = useSearchParams();
     const planId = searchParams.get('plan_id') || localStorage.getItem('plan_id');
     const handleContinue = async () => {
@@ -44,6 +44,16 @@ function CollectWebsiteContent({ onNextStep }) {
 
     const isFormValid = websiteUrl.trim() !== "" && /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(websiteUrl);
 
+    const handleDeletePage = async (url) => {
+        try {
+            await deletePage(url, planId);
+            setScrapedPages(pages => pages.filter(page => page.url !== url));
+        } catch (error) {
+            console.error("Error deleting page:", error);
+            // You might want to show an error message to the user here
+        }
+    };
+
     return (
         <div className="flex flex-col items-center justify-center">
             <h2>Collect your website's content</h2>
@@ -60,9 +70,25 @@ function CollectWebsiteContent({ onNextStep }) {
             </div>
             {webscrapeStatus !== "idle" && <WebscrapeProgressIndicator progress={webscrapeProgress} status={webscrapeStatus}/>}
             <Button onClick={handleContinue} disabled={webscrapeStatus !== "completed"}>Continue</Button>
-            {scrapedPages.map((page) => (
-                <ScrapedPage key={page.url} url={page.url} internal={page.internal} />
-            ))}
+            {scrapedPages.length > 0 && (
+                <div className="flex flex-col items-center justify-center w-full bg-color-light p-4 rounded-lg my-10">
+                    <div className="flex items-center w-full my-2">
+                        <hr className="flex-grow border-t border-dark" />
+                        <span className="mx-2 text-color-dark font-bold text-[14px]">Fetched pages: {scrapedPages.length}</span>
+                        <hr className="flex-grow border-t border-dark" />
+                    </div>
+                    <div className="w-full overflow-y-auto max-h-[300px]">
+                        {scrapedPages.map((page) => (
+                            <ScrapedPage 
+                                key={page.url} 
+                                url={page.url} 
+                                internal={page.internal} 
+                                onDelete={() => handleDeletePage(page.url)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
