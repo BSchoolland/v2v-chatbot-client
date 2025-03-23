@@ -80,4 +80,14 @@ export const deletePage = async (url: string, planId: string) => {
     }
 };
 
+// Add Google authentication function
+export const googleLogin = async (credential: string) => {
+    try {
+        const response = await api.post('/website/api/google-auth', { credential });
+        return response.data as any;
+    } catch (error: any) {
+        throw error.response?.data || error.message;
+    }
+};
+
 export default api; 

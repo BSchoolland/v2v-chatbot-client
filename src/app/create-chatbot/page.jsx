@@ -5,10 +5,11 @@ import CollectWebsiteContent from "@/components/chatbot-creation/step2/collectWe
 import CustomizeChatbot from "@/components/chatbot-creation/step3/customizeChatbot";
 import TestChatbot from "@/components/chatbot-creation/step4/testChatbot";
 import DeployChatbot from "@/components/chatbot-creation/step5/deployChatbot";
-import Button from "@/components/ui/button";
 import { withAuth } from "@/components/auth/withAuth";
 import { useState } from "react";
 import ProgressStepIndicator from "@/components/chatbot-creation/progressStepIndicator";
+
+
 function CreateChatbotPage() {
     const [step, setStep] = useState(parseInt(localStorage.getItem("chatbotCreationStep")) || 1);
 
