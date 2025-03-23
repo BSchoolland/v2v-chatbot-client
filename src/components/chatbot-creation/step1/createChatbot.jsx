@@ -19,14 +19,15 @@ function CreateChatbot({ onNextStep }) {
                 planName: chatbotName,
                 planTypeId: selectedPlan.id
             });
+            console.log(response.data);
             // set plan_id in local storage
-            localStorage.setItem('plan_id', response.data.plan_id);
+            localStorage.setItem('plan_id', response.data.plan.plan_id);
             // add plan_id to the url
             router.push(
                 {
-                    pathname: router.pathname,
+                    pathname: window.location.pathname,
                     query: {
-                        plan_id: response.data.plan_id
+                        plan_id: response.data.plan.plan_id
                     }
                 }
             )

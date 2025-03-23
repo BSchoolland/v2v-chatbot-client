@@ -31,7 +31,6 @@ export const login = async (userData: { email: string; password: string; }) => {
 export const checkAuth = async () => {
     try {
         const response = await api.get('/website/api/me');
-        console.log(response.data);
         return response.data.authenticated; // Access 'authenticated' from response.data
     } catch (error) {
         return false;
@@ -41,12 +40,33 @@ export const checkAuth = async () => {
 // Add logout function
 export const logout = async () => {
     try {
-        console.log("logging out");
         await api.get('/website/api/logout');
         return true; // Indicate successful logout
     } catch (error: any) { // Specify 'any' type for error
         throw error.response?.data || error.message; // Handle error appropriately
     }
+};
+
+// handle persistent webscrape progress updates (cannot use axios for this)
+export const initiateWebscrape = async (url: string, planId: string, onMessage: (data: any) => void) => {
+    // first, create a new chatbot
+    const response = await api.post('/website/api/chatbot-setup/create-chatbot', {
+        planId: planId
+    });
+    const chatbotId = response.data.chatbot_id;
+    // then, initiate the webscrape
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/website/api/chatbot-setup/scrape-site-progress?url=${encodeURIComponent(url)}&planId=${planId}`, {withCredentials: true});
+    
+    eventSource.onmessage = (event) => {
+        onMessage(JSON.parse(event.data));
+    };
+
+    eventSource.onerror = (error) => {
+        console.error("EventSource failed:", error);
+        eventSource.close();
+    };
+
+    return eventSource;
 };
 
 export default api; 

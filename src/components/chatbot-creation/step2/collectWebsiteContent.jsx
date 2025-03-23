@@ -3,17 +3,19 @@
 import { useState } from "react";
 import Button from "@/components/ui/button";
 import TextInput from "@/components/ui/textInput";
-import api from "@/utils/api";
-import { useRouter } from "next/navigation";
+import { initiateWebscrape } from "@/utils/api";
 import WebscrapeButton from "./webscrapeButton";
 import WebscrapeProgressIndicator from "./webscrapeProgressIndicator";
+import { useSearchParams } from 'next/navigation'
+import ScrapedPage from "./scrapedPage";
 
 function CollectWebsiteContent({ onNextStep }) {
     const [websiteUrl, setWebsiteUrl] = useState("");
     const [webscrapeStatus, setWebscrapeStatus] = useState("idle");
     const [webscrapeProgress, setWebscrapeProgress] = useState(0);
-    const router = useRouter();
-
+    const [scrapedPages, setScrapedPages] = useState([{url: "https://www.example.com", internal: true}]);
+    const searchParams = useSearchParams();
+    const planId = searchParams.get('plan_id') || localStorage.getItem('plan_id');
     const handleContinue = async () => {
         try {
             // proceed to next step
@@ -24,16 +26,20 @@ function CollectWebsiteContent({ onNextStep }) {
         }
     };
 
+    const onMessage = (data) => {
+        setWebscrapeProgress(data.percentage || 0);
+        if (data.complete) {
+            setWebscrapeStatus("completed");
+            setWebscrapeProgress(100);
+            console.log(data.allUrls);
+            setScrapedPages(data.allUrls);
+        }
+    }
+
     // This is a mock function that simulates the webscrape process
     const handleWebscrape = async () => {
         setWebscrapeStatus("inProgress");
-        setWebscrapeProgress(0);
-        for (let i = 0; i < 25; i++) {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            setWebscrapeProgress(i * 4);
-        }
-        setWebscrapeProgress(100);
-        setWebscrapeStatus("completed");
+        initiateWebscrape(websiteUrl, planId, onMessage);
     }
 
     const isFormValid = websiteUrl.trim() !== "" && /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(websiteUrl);
@@ -54,7 +60,9 @@ function CollectWebsiteContent({ onNextStep }) {
             </div>
             {webscrapeStatus !== "idle" && <WebscrapeProgressIndicator progress={webscrapeProgress} status={webscrapeStatus}/>}
             <Button onClick={handleContinue} disabled={webscrapeStatus !== "completed"}>Continue</Button>
-
+            {scrapedPages.map((page) => (
+                <ScrapedPage key={page.url} url={page.url} internal={page.internal} />
+            ))}
         </div>
     )
 }

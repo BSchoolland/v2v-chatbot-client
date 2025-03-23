@@ -1,9 +1,10 @@
 // src/components/onboarding/scrapedPage.jsx
 
-function ScrapedPage() {
+function ScrapedPage({url, internal}) {
     return (
-        <div>
-            <h1>Scraped page component goes here</h1>
+        <div className="flex flex-col items-center justify-center h-screen">
+            <p>{url}</p>
+            <h3>Scraped page component goes here</h3>
         </div>
     )
 }

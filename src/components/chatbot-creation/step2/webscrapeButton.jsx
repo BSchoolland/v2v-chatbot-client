@@ -22,10 +22,10 @@ function Button({ children, disabled, className, scraperStatus, spinnerType = 'd
     return (
       <button 
         className={`text-white justify-center items-center bg-color-dark p-2 my-3 rounded-[12px] cursor-pointer w-[30%] ${
-          disabled ? 'opacity-70 cursor-not-allowed' : ''
+          disabled || scraperStatus === 'inProgress' ? 'opacity-70 cursor-not-allowed' : ''
         } ${className}`}
         style={{ alignSelf: 'flex-end' }}
-        disabled={disabled}
+        disabled={disabled || scraperStatus != 'idle'}
         {...props}
       >
         <div className="flex items-center justify-center gap-2">

@@ -17,7 +17,6 @@ function Dashboard() {
             {/* Your dashboard content here */}
             <Button onClick={() => api.get('/website/api/logout')
                 .then(() => {
-                    console.log("logged out");
                     router.push('/');
                 })
                 .catch((error) => {
