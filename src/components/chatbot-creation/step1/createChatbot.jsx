@@ -5,19 +5,31 @@ import Button from "@/components/ui/button";
 import TextInput from "@/components/ui/textInput";
 import Plans from "./plans";
 import api from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 function CreateChatbot({ onNextStep }) {
     const [chatbotName, setChatbotName] = useState("");
     const [selectedPlan, setSelectedPlan] = useState(null);
+    const router = useRouter();
 
     const handleContinue = async () => {
         try {
-            // Make API call to create chatbot
-            await api.post('/website/api/chatbots', {
-                name: chatbotName,
-                plan: selectedPlan.name
+            // Make API call to create the plan
+            const response = await api.post('/website/api/add-plan', {
+                planName: chatbotName,
+                planTypeId: selectedPlan.id
             });
-            
+            // set plan_id in local storage
+            localStorage.setItem('plan_id', response.data.plan_id);
+            // add plan_id to the url
+            router.push(
+                {
+                    pathname: router.pathname,
+                    query: {
+                        plan_id: response.data.plan_id
+                    }
+                }
+            )
             // If successful, proceed to next step
             onNextStep();
         } catch (error) {

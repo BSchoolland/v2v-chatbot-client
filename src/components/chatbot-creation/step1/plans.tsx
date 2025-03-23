@@ -8,6 +8,7 @@ const plans = [
     {
         name: "Free",
         monthlyCost: 0,
+        id: 0,
         features: [
             "50 messages/month",
             "GPT-4o mini model",
@@ -18,7 +19,8 @@ const plans = [
     },
     {
         name: "Basic",
-        monthlyCost: 8,
+        monthlyCost: 4.99,
+        id: 1,
         features: [
             "1000 messages/month",
             "Access to all models",
@@ -29,7 +31,8 @@ const plans = [
     },
     {
         name: "Pro",
-        monthlyCost: 30,
+        monthlyCost: 20,
+        id: 2,
         features: [
             "5000 messages/month",
             "Access to all models",

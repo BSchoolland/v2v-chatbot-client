@@ -3,8 +3,8 @@
 function PlanCard({ plan, isSelected, onSelect }: { plan: any, isSelected?: boolean, onSelect?: () => void }) {
     return (
         <div 
-            className={`flex flex-col w-full border-1 border-gray-300 rounded-[8px] p-4 cursor-pointer ${
-                isSelected ? 'bg-color-selected' : 'bg-card'
+            className={`flex flex-col w-full border-1  rounded-[8px] p-4 cursor-pointer bg-card ${
+                isSelected ? 'border-color-primary' : 'border-gray-300'
             }`}
             onClick={onSelect}
         >
