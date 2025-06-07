@@ -11,7 +11,7 @@ function SectionToggle({ section1, section2 }) {
 
     return (
         <div className="flex flex-col w-full">
-            <div className="flex flex-row gap-4 mb-6">
+            <div className="flex flex-row gap-16 mb-6">
                 <div 
                     className="flex flex-col items-center flex-1 cursor-pointer" 
                     onClick={() => handleSectionChange(section1)}

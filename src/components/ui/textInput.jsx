@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { IoEyeOutline } from 'react-icons/io5';
 import { FaRegEyeSlash } from 'react-icons/fa';
-
-function TextInput({ placeholder, label, type, ...props }) {
+import HelpText from '@/components/ui/helpText';
+function TextInput({ placeholder, label, type, helpText, ...props }) {
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === 'password';
 
     return (
         <div className="flex flex-col w-full">
-            {label && <label className="text-[16px] text-color-neutral mt-3">{label}</label>}
+            <div className="flex flex-row justify-between items-end">
+                {label && <label className="text-[16px] text-color-neutral mt-3">{label}</label>}
+                {helpText && <HelpText text={helpText} />}
+            </div>
             <div className="relative w-full">
                 <input 
                     type={isPassword ? (showPassword ? 'text' : 'password') : type || "text"} 
