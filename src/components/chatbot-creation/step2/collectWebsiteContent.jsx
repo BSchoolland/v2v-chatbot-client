@@ -35,15 +35,18 @@ function CollectWebsiteContent({ onNextStep }) {
             setScrapedPages(data.allUrls);
         }
     }
-
+    let url = websiteUrl.trim();
+    if (!url.startsWith("https://")) {
+        url = "https://" + url;
+    }
     // This is a mock function that simulates the webscrape process
     const handleWebscrape = async () => {
         setWebscrapeStatus("inProgress");
-        initiateWebscrape(websiteUrl, planId, onMessage);
+        initiateWebscrape(url, planId, onMessage);
     }
-
-    const isFormValid = websiteUrl.trim() !== "" && /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(websiteUrl);
-
+    
+    const isFormValid = url !== "" && /^https?:\/\/[^\s/$.?#].[^\s]*\..+/.test(url);
+    console.log(isFormValid, url);
     const handleDeletePage = async (url) => {
         try {
             await deletePage(url, planId);

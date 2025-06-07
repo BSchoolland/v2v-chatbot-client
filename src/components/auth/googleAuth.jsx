@@ -30,10 +30,11 @@ function GoogleAuth() {
                 onSuccess={handleSuccess}
                 onError={handleError}
                 useOneTap
-                theme="filled_blue"
                 shape="rectangular"
+                logo_alignment="center"
                 text="continue_with"
-                size="large"
+                size="medium"
+                width="400"
             />
         </div>
     );
