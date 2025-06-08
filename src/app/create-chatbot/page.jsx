@@ -19,6 +19,12 @@ function CreateChatbotPage() {
         localStorage.setItem("chatbotCreationStep", step + 1);
     }
 
+    const handlePreviousStep = () => {
+        setStep(step - 1);
+        // set the step in local storage
+        localStorage.setItem("chatbotCreationStep", step - 1);
+    }
+
     const finishChatbotCreation = () => {
         localStorage.removeItem("chatbotCreationStep");
         router.push("/dashboard");
@@ -29,7 +35,8 @@ function CreateChatbotPage() {
         {step === 1 && <CreateChatbot onNextStep={handleNextStep} />}
         {step === 2 && <CollectWebsiteContent onNextStep={handleNextStep} />}
         {step === 3 && <CustomizeChatbot onNextStep={handleNextStep} />}
-        {step === 4 && <TestChatbot onNextStep={handleNextStep} />}
+        {step === 4 && <TestChatbot onNextStep={handleNextStep} onPreviousStep={handlePreviousStep} />} 
+        {/* Can return from step 4 to step 3 to change settings after testing */}
         {step === 5 && <DeployChatbot onNextStep={finishChatbotCreation} />}
     </div>;
 }

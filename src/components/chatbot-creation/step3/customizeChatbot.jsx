@@ -8,7 +8,7 @@ import api from "@/utils/api";
 import { useState } from "react";
 import OptionsInput from "@/components/ui/optionsInput";
 
-function CustomizeChatbot() {
+function CustomizeChatbot({ onNextStep }) {
     const [chatbotName, setChatbotName] = useState("");
     const [chatbotBehavior, setChatbotBehavior] = useState("");
     const [welcomeMessage, setWelcomeMessage] = useState("");
